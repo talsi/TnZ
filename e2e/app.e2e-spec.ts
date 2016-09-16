@@ -1,6 +1,6 @@
 import { TnZPage } from './app.po';
 
-describe('tn-z App', function() {
+describe('tnz App', function() {
   let page: TnZPage;
 
   beforeEach(() => {
