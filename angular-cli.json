@@ -1,7 +1,7 @@
 {
   "project": {
     "version": "1.0.0-beta.14",
-    "name": "tn-z"
+    "name": "tnz"
   },
   "apps": [
     {
@@ -15,9 +15,17 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
+        "/node_modules/materialize-css/dist/css/materialize.min.css",
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "/node_modules/soundcloud/sdk.js",
+        "/node_modules/soundmanager2/script/soundmanager2-nodebug-jsmin.js",
+        "/node_modules/jquery/dist/jquery.min.js",
+        "/node_modules/materialize-css/dist/js/materialize.min.js",
+        "/node_modules/heb-date/heb-date.min.js",
+        "ga.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
