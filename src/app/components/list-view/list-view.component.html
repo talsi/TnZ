@@ -1,0 +1,35 @@
+<pre-loader [isActive]="!isListReady()"></pre-loader>
+
+<pagination-controls #p (pageChange)="config.currentPage = $event" *ngIf="isListReady()">
+  <ul class="pagination">
+    <li class="waves-effect" [class.disabled]="p.isFirstPage()" (click)="p.previous()">
+      <a><i class="material-icons">chevron_right</i></a>
+    </li>
+    <li class="waves-effect" [ngClass]="{'active' : p.getCurrent() === page.value}"
+        *ngFor="let page of p.pages" (click)="p.setCurrent(page.value)"><a>{{ page.label }}</a>
+    </li>
+    <li class="waves-effect" [class.disabled]="p.isLastPage()" (click)="p.next()">
+      <a><i class="material-icons">chevron_left</i></a>
+    </li>
+  </ul>
+</pagination-controls>
+
+<ul class="tracks-list">
+  <li class="row" *ngFor="let track of tracks | tracksPipe: dynamicFilter | paginate: config">
+    <div class="col s12">
+      <div class="card">
+        <div class="card-content blue-grey-text text-darken-3">
+          <div class="progress" *ngIf="isLoading(track)">
+            <div class="indeterminate"></div>
+          </div>
+          <div class="title-container">
+            <span class="card-title">{{track.displayName}}</span>
+          </div>
+          <p>{{track.created_at | hebDatePipe}}</p>
+          <play-button [track]="track"></play-button>
+          <waveform [track]="track"></waveform>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>

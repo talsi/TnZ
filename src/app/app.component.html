@@ -1,3 +1,14 @@
-<h1>
-  {{title}}
-</h1>
+<header class="section flow-text blue-grey darken-4">
+    <span class="white-text">טייכר וזרחוביץ'</span>
+    <div class="more waves-effect waves-light"></div>
+</header>
+
+<nav class="blue-grey darken-3">
+    <div class="container">
+        <a class="waves-effect waves-light btn btn-medium blue-grey darken-2 flow-text" [routerLink]="['/full-episodes']">תכניות מלאות</a>
+        <a class="waves-effect waves-light btn btn-medium blue-grey darken-2 flow-text" [routerLink]="['/skits']">מערכונים</a>
+    </div>
+</nav>
+
+<!-- Routed views go here -->
+<router-outlet></router-outlet>

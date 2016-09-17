@@ -1,0 +1,16 @@
+<div class="waveform-wrapper">
+
+  <div class="progress-bar blue-grey darken-4"
+       [style.left.%]="getProgressBarPosition()"></div>
+
+  <div class="seek-bar"
+       [style.left.%]="getSeekBarPosition()"
+       [attr.time]="seekBarTime"
+       [class.tooltip-to-right]="seekBarPosition < 50"
+       [class.tooltip-to-left]="seekBarPosition >= 50"></div>
+
+  <img class="waveform" [src]="track.waveform_url" draggable="false">
+
+  <span class="duration">{{currentPosition}}{{track.duration | durationPipe}}</span>
+
+</div>

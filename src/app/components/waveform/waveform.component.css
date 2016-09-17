@@ -1,0 +1,70 @@
+:host{
+    display: block;
+}
+
+.waveform-wrapper{
+    margin-top: 15px;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.progress-bar, .seek-bar{
+    position: absolute;
+    width: 100%;
+    top: 2px;
+    bottom: 2px;
+}
+
+.seek-bar:before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.waveform-wrapper:hover .seek-bar:after{
+    content: attr(time);
+    position: absolute;
+    top: 0;
+    background: #EFEFEF;
+    z-index: 1;
+    padding: 0 5px;
+    box-shadow: inset 0 0px 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.seek-bar.tooltip-to-right:after{
+    left: 100%;
+}
+
+.seek-bar.tooltip-to-left:after{
+    right: 0;
+}
+
+.waveform-wrapper:before{
+    content: '';
+    position: absolute;
+    background-color: currentColor;
+    top: 2px;
+    left: 0px;
+    right: 0;
+    bottom: 2px;
+}
+
+.duration{
+    position: absolute;
+    color: white;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    direction: ltr;
+}
+
+.waveform{
+    width: 100%;
+    vertical-align: bottom;
+    position: relative;
+}

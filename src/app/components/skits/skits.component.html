@@ -1,0 +1,8 @@
+<div class="container">
+  <ul class="tabs">
+    <li class="tab"><a class="waves-effect waves-light flow-text" (click)="setFilter('dotan-the-tiger')">דותן הנמר</a></li>
+    <li class="tab"><a class="active waves-effect waves-light flow-text" (click)="setFilter('all-skits')">הכל</a></li>
+  </ul>
+</div>
+
+<list-view [dynamicFilter]="dynamicFilter"></list-view>
