@@ -1,10 +1,10 @@
-import { TnZPage } from './app.po';
+import { TnzPage } from './app.po';
 
 describe('tnz App', function() {
-  let page: TnZPage;
+  let page: TnzPage;
 
   beforeEach(() => {
-    page = new TnZPage();
+    page = new TnzPage();
   });
 
   it('should display message saying app works', () => {
