@@ -1,12 +1,12 @@
 import {Component, OnInit} from "@angular/core";
 import {ITracksFilter} from "../../interfaces";
-import {FULL_EPISODES_FILTER, COMPILATIONS_FILTER} from "../../pipes";
+// import {FULL_EPISODES_FILTER, COMPILATIONS_FILTER} from "../../pipes";
 
 declare const $: any;
 
 let filters: {[index: string]: ITracksFilter} = {
-  'all': FULL_EPISODES_FILTER,
-  'compilations': COMPILATIONS_FILTER
+  // 'all': FULL_EPISODES_FILTER,
+  // 'compilations': COMPILATIONS_FILTER
 };
 
 @Component({

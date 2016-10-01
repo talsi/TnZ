@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {Http} from '@angular/http';
-import {SOUND_CLOUD_CONFIG, SOUND_CLOUD_SDK, ISoundCloudSDK, ISoundCloudConfig} from "../interfaces";
-import {Observable} from 'rxjs';
+import { SOUND_CLOUD_CONFIG, SOUND_CLOUD_SDK, ISoundCloudSDK, ISoundCloudConfig, ISoundCloudTrack } from "../interfaces";
+import { Observable, Observer } from 'rxjs';
 
 // TODO: merge consts (tracks-filter pipe)
 let FULL_EPISODE_MINIMUM_DURATION_millis = 1800000; // 30 minutes
@@ -12,7 +12,7 @@ let SKITS_KEYWORDS = ['אליעד מלכי', 'כמעט שבת', 'ראובן', '�
 export class SoundCloudService {
 
   private _tracks: any = [];
-  private _o: any;
+  private _o: Observer<ISoundCloudTrack[]>;
 
   public constructor(@Inject(SOUND_CLOUD_CONFIG) private _config: ISoundCloudConfig,
                      @Inject(SOUND_CLOUD_SDK) private _sdk: ISoundCloudSDK,
@@ -29,18 +29,18 @@ export class SoundCloudService {
   private populateList(data: any) {
     data = data || {};
     this._tracks = this._tracks.concat(data.collection || []);
-    if (data.next_href) {
-      // we have more tracks - pagination. // TODO: load extra tracks in background.
-      this._http.get(data.next_href)
-          .subscribe(
-              data => { this.populateList(data.json()); },
-              err => { this.errorHandler(err); }
-          );
-    } else {
+    // if (data.next_href) {
+    //   // we have more tracks - pagination. // TODO: load extra tracks in background.
+    //   this._http.get(data.next_href)
+    //       .subscribe(
+    //           data => { this.populateList(data.json()); },
+    //           err => { this.errorHandler(err); }
+    //       );
+    // } else {
       // no more tracks from server. let's start the app.
       this.parseTracks();
-      this._o.next(this._tracks);
-    }
+      this._o.next(this._tracks.slice(0, 16));
+    // }
   }
 
   private parseTracks() {
@@ -89,9 +89,9 @@ export class SoundCloudService {
   /**
    * Public API
    */
-  public loadTracks() {
+  public loadTracks(): Observable<ISoundCloudTrack[]> {
     let query = this.getQuery(this._config);
-    return new Observable(o => {
+    return new Observable<ISoundCloudTrack[]>((o: Observer<ISoundCloudTrack[]>) => {
       this._o = o;
       this._sdk.get('/tracks', query)
         .then(data => {

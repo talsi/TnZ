@@ -7,8 +7,9 @@ import { AppComponent } from "./app.component";
 import { SOUND_MANAGER, SOUND_CLOUD_SDK, SOUND_CLOUD_CONFIG } from "./interfaces";
 import { DurationPipe, HebDatePipe, TracksPipe } from "./pipes";
 import { SoundCloudService, PlayerService, TracksStoreService } from "./services";
-import { routing, appRoutingProviders } from "./app.routing";
 import { SkitsComponent, FullEpisodesComponent, ListViewComponent, PlayButtonComponent, PreLoaderComponent, WaveformComponent } from "./components";
+import { TnzRoutingModule } from "./app-routing.module";
+import { ActivatedRouteSnapshot, ActivatedRoute } from "@angular/router";
 
 declare const SC: any;
 declare const soundManager: any;
@@ -27,14 +28,13 @@ declare const soundManager: any;
     WaveformComponent
   ],
   imports: [
-    routing,
+    TnzRoutingModule,
     BrowserModule,
     FormsModule,
     HttpModule,
     Ng2PaginationModule
   ],
   providers: [
-    appRoutingProviders,
     PlayerService,
     TracksStoreService,
     SoundCloudService,

@@ -8,7 +8,7 @@ import {FullEpisodesComponent, SkitsComponent} from "./components";
 
 // TODO: full-episodes share component with skits
 // TODO: use resolve service
-// TODO: lazy loading pagination
+
 
 const appRoutes: Routes = [
     {

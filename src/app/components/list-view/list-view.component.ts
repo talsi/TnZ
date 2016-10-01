@@ -1,7 +1,10 @@
-import {Component, Input, OnInit} from "@angular/core";
-import {IPaginationInstance} from "ng2-pagination";
-import {ITracksFilter, ISoundCloudTrack} from "../../interfaces";
-import {TracksStoreService, PlayerService} from "../../services";
+import { Component, OnInit } from "@angular/core";
+import { IPaginationInstance } from "ng2-pagination";
+import { ITracksFilter, ISoundCloudTrack } from "../../interfaces";
+import { TracksStoreService, PlayerService } from "../../services";
+import { ActivatedRoute } from "@angular/router";
+
+// TODO: flux/redux?
 
 @Component({
   selector: 'list-view',
@@ -10,24 +13,19 @@ import {TracksStoreService, PlayerService} from "../../services";
 })
 export class ListViewComponent implements OnInit {
 
-  @Input() public dynamicFilter: ITracksFilter;
+  public dynamicFilter: ITracksFilter;
 
-  public tracks: ISoundCloudTrack[];
   public config: IPaginationInstance = {
     itemsPerPage: 10,
     currentPage: 1
   };
 
-  public constructor(private _tracksStore: TracksStoreService, private _player: PlayerService) { }
+  public constructor(public tracksStore: TracksStoreService,
+                     private _route: ActivatedRoute,
+                     private _player: PlayerService) { }
 
   public ngOnInit() {
-    this._tracksStore.tracks.subscribe(tracks => {
-      this.tracks = tracks.toArray();
-    });
-  }
-
-  public isListReady() {
-    return this.tracks && this.tracks.length > 0;
+    this.dynamicFilter = <ITracksFilter> this._route.snapshot.data['filter'];
   }
 
   public isLoading(track: ISoundCloudTrack) {
