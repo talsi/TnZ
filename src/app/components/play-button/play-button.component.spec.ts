@@ -5,7 +5,7 @@ import { PlayButtonComponent } from './play-button.component';
 
 describe('Component: PlayButton', () => {
   it('should create an instance', () => {
-    let component = new PlayButtonComponent();
-    expect(component).toBeTruthy();
+    //let component = new PlayButtonComponent();
+    expect(false).toBeTruthy();
   });
 });

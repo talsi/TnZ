@@ -8,14 +8,19 @@ import "rxjs/add/operator/share";
 export class TracksStoreService {
 
   private _tracks: ISoundCloudTrack[] = [];
+  private _o: Observer<ISoundCloudTrack[]>;
 
-  public tracks$: Observable<ISoundCloudTrack[]> = new Observable<ISoundCloudTrack[]>((o: Observer<ISoundCloudTrack[]>) => {
+  public tracks$: Observable<ISoundCloudTrack[]> = new Observable<ISoundCloudTrack[]>(o => this._o = o).share();
+
+  constructor(private _soundCloudService: SoundCloudService) {
+    this.loadTracks();
+  }
+
+  private loadTracks() {
     this._soundCloudService.loadTracks().subscribe(
-      tracks => o.next(this._tracks = this._tracks.concat(tracks)),
-      err => o.error(err),
-      () => o.complete()
+      tracks => this._o.next(this._tracks = this._tracks.concat(tracks)),
+      err => this._o.error(err),
+      () => this._o.complete()
     );
-  }).share();
-
-  constructor(private _soundCloudService: SoundCloudService) { }
+  }
 }

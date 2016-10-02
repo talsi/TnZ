@@ -25,14 +25,6 @@ ul.tracks-list {
   background-color: #efefef;
 }
 
-.progress {
-  position: absolute;
-  width: auto;
-  left: 20px;
-  right: 20px;
-  margin: 0;
-}
-
 pagination-controls {
   display: block;
   text-align: center;

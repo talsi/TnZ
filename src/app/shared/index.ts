@@ -1,0 +1,2 @@
+
+export const SOUND_CLOUD_CLIENT_ID = 'aea8a4424e55692d2417680c172aa53b';
