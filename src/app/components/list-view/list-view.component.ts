@@ -27,7 +27,7 @@ export class ListViewComponent implements OnInit {
 
   public ngOnInit() {
     this.dynamicFilter = <ITracksFilter> this._route.snapshot.data['filter'];
-    this.tracksStore.tracks$.subscribe(() => {setTimeout(() => {this.isPaginationReady = true;})});
+    this.tracksStore.tracks$.subscribe(() => {setTimeout(() => {this.isPaginationReady = true;})}); // bug workaround: ng2-pagination (https://github.com/michaelbromley/ng2-pagination/pull/54)
   }
 
   public isLoading(track: ISoundCloudTrack) {
