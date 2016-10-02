@@ -1,5 +1,20 @@
 <section *ngIf="!(tracksStore.tracks$.isEmpty() | async)">
 
+  <pagination-controls #p (pageChange)="config.currentPage = $event" *ngIf="isPaginationReady">
+    <ul class="pagination">
+      <li (click)="p.previous()" [class.disabled]="p.isFirstPage()" class="waves-effect">
+        <a><i class="material-icons">chevron_right</i></a>
+      </li>
+      <li *ngFor="let page of p.pages" (click)="p.setCurrent(page.value)"
+          [ngClass]="{'active' : p.getCurrent() === page.value}" class="waves-effect">
+        <a>{{ page.label }}</a>
+      </li>
+      <li (click)="p.next()" [class.disabled]="p.isLastPage()" class="waves-effect">
+        <a><i class="material-icons">chevron_left</i></a>
+      </li>
+    </ul>
+  </pagination-controls>
+
   <ul class="tracks-list">
     <li class="row" *ngFor="let track of (tracksStore.tracks$ | async | tracksPipe: dynamicFilter | paginate: config)">
       <div class="col s12">
@@ -19,20 +34,5 @@
       </div>
     </li>
   </ul>
-
-  <pagination-controls #p (pageChange)="config.currentPage = $event">
-    <ul class="pagination">
-      <li (click)="p.previous()" [class.disabled]="p.isFirstPage()" class="waves-effect">
-        <a><i class="material-icons">chevron_right</i></a>
-      </li>
-      <li *ngFor="let page of p.pages" (click)="p.setCurrent(page.value)"
-          [ngClass]="{'active' : p.getCurrent() === page.value}" class="waves-effect">
-        <a>{{ page.label }}</a>
-      </li>
-      <li (click)="p.next()" [class.disabled]="p.isLastPage()" class="waves-effect">
-        <a><i class="material-icons">chevron_left</i></a>
-      </li>
-    </ul>
-  </pagination-controls>
 
 </section>

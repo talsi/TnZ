@@ -13,6 +13,7 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class ListViewComponent implements OnInit {
 
+  public isPaginationReady: boolean = false;
   public dynamicFilter: ITracksFilter;
 
   public config: IPaginationInstance = {
@@ -26,6 +27,7 @@ export class ListViewComponent implements OnInit {
 
   public ngOnInit() {
     this.dynamicFilter = <ITracksFilter> this._route.snapshot.data['filter'];
+    this.tracksStore.tracks$.subscribe(() => {setTimeout(() => {this.isPaginationReady = true;})});
   }
 
   public isLoading(track: ISoundCloudTrack) {
