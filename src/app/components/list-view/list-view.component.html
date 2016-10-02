@@ -1,6 +1,6 @@
 <section *ngIf="!(tracksStore.tracks$.isEmpty() | async)">
 
-  <pagination-controls #p (pageChange)="config.currentPage = $event" *ngIf="isPaginationReady">
+  <pagination-controls *ngIf="isPaginationReady" (pageChange)="config.currentPage = $event" #p>
     <ul class="pagination">
       <li (click)="p.previous()" [class.disabled]="p.isFirstPage()" class="waves-effect">
         <a><i class="material-icons">chevron_right</i></a>
