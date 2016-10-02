@@ -4,8 +4,6 @@ import { ITracksFilter, ISoundCloudTrack } from "../../interfaces";
 import { TracksStoreService, PlayerService } from "../../services";
 import { ActivatedRoute } from "@angular/router";
 
-// TODO: flux/redux?
-
 @Component({
   selector: 'list-view',
   templateUrl: './list-view.component.html',
