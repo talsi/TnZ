@@ -1,12 +1,12 @@
-import {Injectable, Inject} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
-import {ISoundCloudTrack, SOUND_MANAGER, ISoundManager} from "../interfaces";
+import { BehaviorSubject } from "rxjs";
+import { Injectable, Inject } from "@angular/core";
+import { ISoundCloudTrack, SOUND_MANAGER, ISoundManager, ITrackPosition, ISound } from "../interfaces";
 
 @Injectable()
 export class PlayerService {
 
-  private _activeTrack: BehaviorSubject<ISoundCloudTrack> = new BehaviorSubject(undefined);
-  private _currentTrackPosition: BehaviorSubject<{track: ISoundCloudTrack, time: number}> = new BehaviorSubject({track: undefined, time: 0});
+  private _activeTrack: BehaviorSubject<ISoundCloudTrack> = new BehaviorSubject<ISoundCloudTrack>(undefined);
+  private _currentTrackPosition: BehaviorSubject<ITrackPosition> = new BehaviorSubject<ITrackPosition>({track: undefined, time: 0});
 
   public constructor(@Inject(SOUND_MANAGER) private _soundManager: ISoundManager) { }
 
@@ -29,8 +29,20 @@ export class PlayerService {
 
   public play(track: ISoundCloudTrack) {
     this.pause();
+    this.createSound(track).play();
+    this._activeTrack.next(track);
+  }
+
+  public seek(track: ISoundCloudTrack, millis: number) {
+    if(track !== this._activeTrack.getValue()) {
+      this.play(track);
+    }
+    this._soundManager.setPosition(track._id, millis);
+  }
+
+  private createSound(track: ISoundCloudTrack): ISound {
     let prevTime: Date = null;
-    var sound = this._soundManager.createSound({
+    const sound: ISound = this._soundManager.createSound({
       id: track._id,
       url: track.stream_url,
       whileplaying: () => {
@@ -45,15 +57,6 @@ export class PlayerService {
         }
       }
     });
-    sound.play();
-    this._activeTrack.next(track);
+    return sound;
   }
-
-  public seek(track: ISoundCloudTrack, millis: number) {
-    if(track !== this._activeTrack.getValue()) {
-      this.play(track);
-    }
-    this._soundManager.setPosition(track._id, millis);
-  }
-
 }

@@ -11,16 +11,12 @@ const routes: Routes = [
   {
     path: 'full-episodes',
     component: ListViewComponent,
-    data: {
-      filter: FULL_EPISODES_FILTER
-    }
+    data: { pipe: FULL_EPISODES_FILTER }
   },
   {
     path: 'skits',
     component: ListViewComponent,
-    data: {
-      filter: SKITS_FILTER
-    }
+    data: { pipe: SKITS_FILTER }
   },
   {
     path: '',

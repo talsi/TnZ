@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ISoundCloudTrack } from "../interfaces";
-import { SOUND_CLOUD_CLIENT_ID } from "../shared";
+import { SOUND_CLOUD_CLIENT_ID, FULL_EPISODE_MINIMUM_DURATION_millis } from "../shared";
 
-const FULL_EPISODE_MINIMUM_DURATION_millis = 1800000; // 30 minutes
 const WORDS_TO_REMOVE_FROM_TITLE = ["טייכר וזרחוביץ'", 'טייכר וזרחוביץ', 'ברדיו תל אביב,', 'ברדיו ת"א', 'יום', 'ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', ',', '-', '#', '[0-9]', 'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי ', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר', 'בינואר', 'בפברואר', 'במרץ', 'באפריל', 'במאי', 'ביוני', 'ביולי', 'באוגוסט', 'בספטמבר', 'באוקטובר', 'בנובמבר', 'בדצמבר', 'באגוסט', '2015', '2016'];
 const regex = new RegExp(WORDS_TO_REMOVE_FROM_TITLE.join('|'), 'gi');
 
