@@ -6,7 +6,7 @@ import { Ng2PaginationModule } from "ng2-pagination";
 import { AppComponent } from "./app.component";
 import { TnzRoutingModule } from "./app-routing.module";
 import { DurationPipe, HebDatePipe, TracksPipe } from "./pipes";
-import { SoundCloudService, PlayerService, TracksStoreService, TracksParserService } from "./services";
+import { SoundCloudService, PlayerService, StoreService, TracksParserService } from "./services";
 import { SOUND_MANAGER } from "./interfaces";
 import { ListViewComponent, PlayButtonComponent, PreLoaderComponent, WaveformComponent } from "./components";
 import { BufferComponent } from "./components/buffer/buffer.component";
@@ -36,7 +36,7 @@ declare const soundManager: any;
   ],
   providers: [
     PlayerService,
-    TracksStoreService,
+    StoreService,
     SoundCloudService,
     TracksParserService,
     {provide: SOUND_MANAGER, useValue: soundManager}

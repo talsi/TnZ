@@ -5,17 +5,14 @@ import { Observable, Observer } from "rxjs";
 import "rxjs/add/operator/publishReplay";
 
 @Injectable()
-export class TracksStoreService {
+export class StoreService {
 
   public tracks$: Observable<ISoundCloudTrack[]> =
     new Observable<ISoundCloudTrack[]>((o: Observer<ISoundCloudTrack[]>) => {
       let store: ISoundCloudTrack[] = [];
       this._soundCloudService.loadTracks().subscribe(
         tracks => o.next(store = store.concat(tracks)),
-        err => {
-          o.error(err);
-          o.complete();
-        }
+        err => { o.error(err); o.complete(); }
       );
     }).publishReplay(1).refCount();
 

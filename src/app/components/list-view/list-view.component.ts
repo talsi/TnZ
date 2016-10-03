@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { IPaginationInstance } from "ng2-pagination";
 import { ITracksFilter } from "../../interfaces";
-import { TracksStoreService } from "../../services";
+import { StoreService } from "../../services";
 import { ActivatedRoute } from "@angular/router";
-import { Observable } from "rxjs";
 
 @Component({
   selector: 'list-view',
@@ -19,7 +18,7 @@ export class ListViewComponent implements OnInit {
     currentPage: 1
   };
 
-  public constructor(public tracksStore: TracksStoreService, private _route: ActivatedRoute) { }
+  public constructor(private _route: ActivatedRoute, public store: StoreService) { }
 
   public ngOnInit() {
     this.dynamicFilter = <ITracksFilter> this._route.snapshot.data['filter'];

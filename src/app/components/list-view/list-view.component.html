@@ -1,9 +1,9 @@
-<section *ngIf="tracksStore.tracks$ | async">
+<section *ngIf="store.tracks$ | async">
 
   <pagination [config]="config"></pagination>
 
   <ul class="tracks-list">
-    <li class="row" *ngFor="let track of (tracksStore.tracks$ | async | tracksPipe: dynamicFilter | paginate: config)">
+    <li class="row" *ngFor="let track of (store.tracks$ | async | tracksPipe: dynamicFilter | paginate: config)">
       <div class="col s12">
         <div class="card">
           <div class="card-content blue-grey-text text-darken-3">
