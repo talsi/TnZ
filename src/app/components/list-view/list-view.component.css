@@ -25,11 +25,6 @@ ul.tracks-list {
   background-color: #efefef;
 }
 
-pagination-controls {
-  display: block;
-  text-align: center;
-}
-
 .title-container {
   padding-left: 65px;
 }

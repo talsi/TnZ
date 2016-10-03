@@ -9,7 +9,8 @@ import { DurationPipe, HebDatePipe, TracksPipe } from "./pipes";
 import { SoundCloudService, PlayerService, TracksStoreService, TracksParserService } from "./services";
 import { SOUND_MANAGER } from "./interfaces";
 import { ListViewComponent, PlayButtonComponent, PreLoaderComponent, WaveformComponent } from "./components";
-import { BufferComponent } from './components/buffer/buffer.component';
+import { BufferComponent } from "./components/buffer/buffer.component";
+import { PaginationComponent } from "./components/pagination/pagination.component";
 
 declare const soundManager: any;
 
@@ -23,7 +24,8 @@ declare const soundManager: any;
     PlayButtonComponent,
     PreLoaderComponent,
     WaveformComponent,
-    BufferComponent
+    BufferComponent,
+    PaginationComponent
   ],
   imports: [
     TnzRoutingModule,

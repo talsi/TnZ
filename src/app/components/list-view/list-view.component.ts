@@ -12,7 +12,6 @@ import { Observable } from "rxjs";
 })
 export class ListViewComponent implements OnInit {
 
-  public isPaginationReady: boolean = false;
   public dynamicFilter: ITracksFilter;
 
   public config: IPaginationInstance = {
@@ -24,13 +23,5 @@ export class ListViewComponent implements OnInit {
 
   public ngOnInit() {
     this.dynamicFilter = <ITracksFilter> this._route.snapshot.data['filter'];
-
-    // bug workaround: ng2-pagination (https://github.com/michaelbromley/ng2-pagination/pull/54)
-    let sub = this.tracksStore.tracks$.subscribe(() => {
-      setTimeout(() => {
-        this.isPaginationReady = true;
-        sub.unsubscribe();
-      })
-    });
   }
 }

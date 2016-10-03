@@ -1,0 +1,14 @@
+<pagination-controls *ngIf="ready$ | async" (pageChange)="config.currentPage = $event" #p>
+  <ul class="pagination">
+    <li (click)="p.previous()" [class.disabled]="p.isFirstPage()" class="waves-effect">
+      <a><i class="material-icons">chevron_right</i></a>
+    </li>
+    <li *ngFor="let page of p.pages" (click)="p.setCurrent(page.value)"
+        [ngClass]="{'active' : p.getCurrent() === page.value}" class="waves-effect">
+      <a>{{ page.label }}</a>
+    </li>
+    <li (click)="p.next()" [class.disabled]="p.isLastPage()" class="waves-effect">
+      <a><i class="material-icons">chevron_left</i></a>
+    </li>
+  </ul>
+</pagination-controls>
