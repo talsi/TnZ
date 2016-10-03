@@ -29,17 +29,3 @@ a{
     background-color: #546e7a  !important; /*blue-grey darkan-1*/
     box-shadow: none;
 }
-
-/*
-:host >>> .tabs a{
-  color: inherit;
-}
-
-:host >>> .tabs a:hover{
-  color: #90caf9;
-}
-
-:host >>> .tabs .indicator{
-  background-color: currentColor;
-}
-*/
