@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { Routes, RouterModule, ActivatedRoute } from "@angular/router";
+import { Routes, RouterModule } from "@angular/router";
 import { ListViewComponent } from "./components/list-view/list-view.component";
 import { FULL_EPISODES_FILTER, SKITS_FILTER } from "./pipes";
 
@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: 'skits',
     component: ListViewComponent,
-    resolve: {
+    data: {
       filter: SKITS_FILTER
     }
   },

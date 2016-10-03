@@ -14,11 +14,11 @@ export class TracksPipe implements PipeTransform {
   }
 }
 
-export let FULL_EPISODES_FILTER: ITracksFilter = (tracks: Array<ISoundCloudTrack>) =>  {
+export let FULL_EPISODES_FILTER: ITracksFilter = (tracks: ISoundCloudTrack[]) =>  {
   return tracks.filter(track => track.duration > FULL_EPISODE_MINIMUM_DURATION_millis);
 };
 
-export let SKITS_FILTER: ITracksFilter = (tracks: Array<ISoundCloudTrack>) =>  {
+export let SKITS_FILTER: ITracksFilter = (tracks: ISoundCloudTrack[]) =>  {
   return tracks.filter(track => track.duration < FULL_EPISODE_MINIMUM_DURATION_millis);
 };
 

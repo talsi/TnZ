@@ -1,4 +1,4 @@
-<section *ngIf="!(tracksStore.tracks$.isEmpty() | async)">
+<section *ngIf="tracksStore.tracks$ | async">
 
   <pagination-controls *ngIf="isPaginationReady" (pageChange)="config.currentPage = $event" #p>
     <ul class="pagination">
