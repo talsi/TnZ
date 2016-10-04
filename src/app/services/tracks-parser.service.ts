@@ -10,9 +10,9 @@ export class TracksParserService {
 
   constructor() { }
 
-  public parseTracks(data: any): ISoundCloudTrack[] {
+  public parseTracks(data: ISoundCloudTrack[]): ISoundCloudTrack[] {
 
-    return data.collection.map((track: any) => {
+    return data.map((track: ISoundCloudTrack) => {
       track._id = '_' + track.id;
       track.stream_url +=  '?client_id=' + SOUND_CLOUD_CLIENT_ID;
       track.displayName = track.title.replace(regex, '');

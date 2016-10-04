@@ -1,22 +1,18 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { ListViewComponent } from "./components/list-view/list-view.component";
-import { FULL_EPISODES_FILTER, SKITS_FILTER } from "./pipes";
-
-// TODO: lazy loading pagination
-// TODO: route params & sharable urls
-// TODO: make Filter<T>
+import { SKITS, FULL_EPISODES } from "./pipes";
 
 const routes: Routes = [
   {
     path: 'full-episodes',
     component: ListViewComponent,
-    data: { pipe: FULL_EPISODES_FILTER }
+    data: { filter: FULL_EPISODES }
   },
   {
     path: 'skits',
     component: ListViewComponent,
-    data: { pipe: SKITS_FILTER }
+    data: { filter: SKITS }
   },
   {
     path: '',
@@ -36,10 +32,9 @@ export class TnzRoutingModule { }
 
 
 
-
-
-//,
+// TODO: route params & sharable urls
+// TODO: 404 "PageNotFoundComponent"
 // {
 //   path: '**',
-//   component: FullEpisodesComponent // TODO: 404 "PageNotFoundComponent"
+//   component: FullEpisodesComponent
 // }

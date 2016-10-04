@@ -19,28 +19,43 @@ export class PlayerService {
   }
 
   public pause() {
-    let currentTrack = this._activeTrack.getValue();
-    if(currentTrack) {
-      this._soundManager.getSoundById(currentTrack._id).pause();
-      currentTrack.isPlaying = false;
-      this._activeTrack.next(undefined);
-    }
+    const currentTrack = this._activeTrack.getValue();
+    if(!currentTrack)
+      return;
+
+    const sound: ISound = this._soundManager.getSoundById(currentTrack._id);
+    sound.prevPosition = sound.position;
+    sound.pause();
+    sound.unload();
+    currentTrack.isPlaying = false;
+    this._activeTrack.next(undefined);
   }
 
   public play(track: ISoundCloudTrack) {
+    if(track === this._activeTrack.getValue())
+      return;
+
+    const sound: ISound = this.getOrCreateSound(track);
     this.pause();
-    this.createSound(track).play();
+    sound.play();
     this._activeTrack.next(track);
+    if(sound.prevPosition){
+      this.seek(sound.prevPosition)
+    }
   }
 
-  public seek(track: ISoundCloudTrack, millis: number) {
-    if(track !== this._activeTrack.getValue()) {
-      this.play(track);
-    }
+  public seek(millis: number) {
+    const track: ISoundCloudTrack = this._activeTrack.getValue();
+    if(!track)
+      return;
     this._soundManager.setPosition(track._id, millis);
   }
 
-  private createSound(track: ISoundCloudTrack): ISound {
+  /**
+   * If SoundManager.createSound is called with the ID of an existing sound, that sound object will be returned "as-is".
+   * Any other getOrCreateSound options passed (eg., url or volume, etc.) will be ignored.
+   */
+  private getOrCreateSound(track: ISoundCloudTrack): ISound {
     let prevTime: Date = null;
     const sound: ISound = this._soundManager.createSound({
       id: track._id,

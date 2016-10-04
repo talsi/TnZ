@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {Input} from "@angular/core/src/metadata/directives";
-import {ISoundCloudTrack} from "../../interfaces";
-import {PlayerService} from "../../services";
+import { Component, OnInit } from "@angular/core";
+import { Input } from "@angular/core/src/metadata/directives";
+import { ISoundCloudTrack } from "../../interfaces";
+import { PlayerService } from "../../services";
 
 @Component({
   selector: 'play-button',

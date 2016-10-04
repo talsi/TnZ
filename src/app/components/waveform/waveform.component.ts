@@ -1,7 +1,7 @@
-import {Component, ElementRef, Input, OnInit, Inject} from "@angular/core";
-import {DurationPipe} from "../../pipes";
-import {ISoundCloudTrack, SOUND_MANAGER, ISoundManager} from "../../interfaces";
-import {PlayerService} from "../../services";
+import { DurationPipe } from "../../pipes";
+import { PlayerService } from "../../services";
+import { Component, ElementRef, Input, OnInit, Inject } from "@angular/core";
+import { ISoundCloudTrack, SOUND_MANAGER, ISoundManager, ISound } from "../../interfaces";
 
 declare const $: any;
 
@@ -31,16 +31,16 @@ export class WaveformComponent implements OnInit {
   private _$el: any;
   private _seekBarWrapperWidth = 0;
 
-  public constructor(private _el: ElementRef,
-                     private _player: PlayerService,
-                     @Inject(SOUND_MANAGER) private _soundManager: ISoundManager) {
+  constructor(private _el: ElementRef,
+              private _player: PlayerService,
+              @Inject(SOUND_MANAGER) private _soundManager: ISoundManager) {
     this._$el = $(this._el.nativeElement);
   }
 
   public ngOnInit() {
     this._seekBarWrapperWidth = this._$el.width();
 
-    var sound = this._soundManager.getSoundById(this.track._id);
+    const sound: ISound = this._soundManager.getSoundById(this.track._id);
     if(sound) {
       this.setPosition(sound.position);
     }
@@ -79,7 +79,7 @@ export class WaveformComponent implements OnInit {
     this.hideSeekBar(ev);
     var x = (ev.pageX || ev.changedTouches[0].pageX) - this._$el.offset().left;
     var millis = ((x / this._seekBarWrapperWidth) * this.track.duration);
-    this._player.seek(this.track, millis);
+    this._player.seek(millis);
   }
 
   public hideSeekBar(ev: any) {

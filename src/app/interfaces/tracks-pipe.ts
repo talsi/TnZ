@@ -1,5 +1,5 @@
 import {ISoundCloudTrack} from './sound-cloud-track';
 
-export interface ITracksPipe {
-    (tracks: Array<ISoundCloudTrack>): Array<ISoundCloudTrack>;
+export interface ITracksFilter {
+  (tracks: ISoundCloudTrack[]): ISoundCloudTrack[];
 };

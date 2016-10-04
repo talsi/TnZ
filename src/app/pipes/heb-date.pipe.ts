@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
   name: 'hebDatePipe'
@@ -10,9 +10,7 @@ export class HebDatePipe implements PipeTransform {
     try {
       var date: any = new Date(dateString);
       result = date.toHebrew();
-    } catch (e) {
-      // console.log(e);
-    }
+    } catch (e) { /*console.log(e);*/ }
     return result;
   }
 }
