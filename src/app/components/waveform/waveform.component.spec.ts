@@ -5,7 +5,7 @@ import { WaveformComponent } from './waveform.component';
 
 describe('Component: Waveform', () => {
   it('should create an instance', () => {
-    let component = new WaveformComponent();
-    expect(component).toBeTruthy();
+    //let component = new WaveformComponent();
+    expect(false).toBeTruthy();
   });
 });

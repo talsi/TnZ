@@ -5,7 +5,7 @@ import { PaginationComponent } from './pagination.component';
 
 describe('Component: Pagination', () => {
   it('should create an instance', () => {
-    let component = new PaginationComponent();
-    expect(component).toBeTruthy();
+    //let component = new PaginationComponent();
+    expect(false).toBeTruthy();
   });
 });
