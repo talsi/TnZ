@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { Input } from "@angular/core/src/metadata/directives";
-import { ISoundCloudTrack } from "../../interfaces";
 import { PlayerService } from "../../services";
+import { IPlayerState, ISoundCloudTrack } from "../../interfaces";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'play-button',
@@ -10,24 +10,20 @@ import { PlayerService } from "../../services";
 })
 export class PlayButtonComponent implements OnInit {
 
-  @Input() public track: ISoundCloudTrack;
+  private _track: ISoundCloudTrack;
+  public isPlaying: boolean;
 
-  public buttonType: string = 'play_arrow';
+  public constructor(public _player: PlayerService) { }
 
-  public constructor(private _player: PlayerService) { }
-
-  public ngOnInit() {
-    this._player.activeTrack.subscribe(activeTrack => {
-      this.buttonType = this.track === activeTrack ? 'pause' : 'play_arrow';
+  ngOnInit(): void {
+    this._player.state$.subscribe(state => {
+      this.isPlaying = state.isPlaying;
+      this._track = state.track;
     });
   }
 
-  public onTrackClicked() {
-    if(this.track === this._player.activeTrack.getValue()) {
-      this._player.pause();
-    } else {
-      this._player.play(this.track);
-    }
+  public onClick() {
+    if (this.isPlaying) return this._player.pause();
+    else return this._player.play(this._track);
   }
-
 }

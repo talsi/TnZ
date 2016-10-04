@@ -11,6 +11,7 @@ import { SOUND_MANAGER } from "./interfaces";
 import { ListViewComponent, PlayButtonComponent, PreLoaderComponent, WaveformComponent } from "./components";
 import { BufferComponent } from "./components/buffer/buffer.component";
 import { PaginationComponent } from "./components/pagination/pagination.component";
+import { PlayerComponent } from './components/player/player.component';
 
 declare const soundManager: any;
 
@@ -25,7 +26,8 @@ declare const soundManager: any;
     PreLoaderComponent,
     WaveformComponent,
     BufferComponent,
-    PaginationComponent
+    PaginationComponent,
+    PlayerComponent
   ],
   imports: [
     TnzRoutingModule,

@@ -13,7 +13,6 @@ export class TracksParserService {
   public parseTracks(data: ISoundCloudTrack[]): ISoundCloudTrack[] {
 
     return data.map((track: ISoundCloudTrack) => {
-      track._id = '_' + track.id;
       track.stream_url +=  '?client_id=' + SOUND_CLOUD_CLIENT_ID;
       track.displayName = track.title.replace(regex, '');
       if (new RegExp('אסדה').test(track.title)) {

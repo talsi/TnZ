@@ -1,20 +1,23 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { PlayerService } from "../../services";
-import { ISoundCloudTrack } from "../../interfaces";
+import { Observable, Subscription } from "rxjs";
 
 @Component({
-  selector: 'track-buffer',
+  selector: 'buffering',
   templateUrl: './buffer.component.html',
   styleUrls: ['./buffer.component.css']
 })
-export class BufferComponent {
+export class BufferComponent implements OnInit {
 
-  @Input() public track: ISoundCloudTrack;
+  public buffering: boolean;
 
-  constructor(private _player: PlayerService) { }
+  constructor(public _player: PlayerService) { }
 
-  public isLoading(track: ISoundCloudTrack) {
-    return this._player.activeTrack.getValue() === track && !track.isPlaying;
+  ngOnInit() {
+    let subscription: Subscription;
+    this._player.state$.subscribe(state => {
+      if(state.sound) subscription = state.sound.buffering$.subscribe(buffering => this.buffering = buffering);
+      else if(subscription) subscription.unsubscribe();
+    });
   }
-
 }

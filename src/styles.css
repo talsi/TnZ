@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 /*@import '../node_modules/materialize-css/dist/fonts';*/
 
+/* Box-sizing border-box */
+* {
+  box-sizing: border-box;
+}
+
 html,
 body,
 div {
@@ -22,9 +27,8 @@ div {
     user-select: none;
 }
 
-/* Box-sizing border-box */
-* {
-    box-sizing: border-box;
+body{
+  overflow: hidden;
 }
 
 /* Loader */

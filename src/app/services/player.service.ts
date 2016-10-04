@@ -1,77 +1,83 @@
-import { BehaviorSubject } from "rxjs";
+import { Observable, Observer } from "rxjs";
 import { Injectable, Inject } from "@angular/core";
-import { ISoundCloudTrack, SOUND_MANAGER, ISoundManager, ITrackPosition, ISound } from "../interfaces";
+import { ISoundCloudTrack, SOUND_MANAGER, ISoundManager, ISound, IPlayerState } from "../interfaces";
 
 @Injectable()
 export class PlayerService {
 
-  private _activeTrack: BehaviorSubject<ISoundCloudTrack> = new BehaviorSubject<ISoundCloudTrack>(undefined);
-  private _currentTrackPosition: BehaviorSubject<ITrackPosition> = new BehaviorSubject<ITrackPosition>({track: undefined, time: 0});
+  private _sounds: {[key: number]: ISound} = {};
+
+  private _state: IPlayerState = { track: null, sound: null, isPlaying: false };
+  private _stateObserver: Observer<IPlayerState>;
+  public state$: Observable<IPlayerState> =
+    new Observable<IPlayerState>(
+      (o: Observer<IPlayerState>) => { this._stateObserver = o; })
+        .startWith(this._state).share();
 
   public constructor(@Inject(SOUND_MANAGER) private _soundManager: ISoundManager) { }
 
-  public get currentTrackPosition(): BehaviorSubject<{track: ISoundCloudTrack, time: number}>{
-    return this._currentTrackPosition;
-  }
-
-  public get activeTrack(): BehaviorSubject<ISoundCloudTrack> {
-    return this._activeTrack;
+  public setInitial(track: ISoundCloudTrack) {
+    this._stateObserver.next(this._state = { track: track, sound: null, isPlaying: false })
   }
 
   public pause() {
-    const currentTrack = this._activeTrack.getValue();
+    const currentTrack = this._state.track;
     if(!currentTrack)
       return;
 
-    const sound: ISound = this._soundManager.getSoundById(currentTrack._id);
-    sound.prevPosition = sound.position;
-    sound.pause();
-    sound.unload();
-    currentTrack.isPlaying = false;
-    this._activeTrack.next(undefined);
+    this._soundManager.getSoundById(currentTrack.id).pause().unload();
+    this._stateObserver.next(this._state = { track: this._state.track, sound: this._state.sound, isPlaying: false });
   }
 
   public play(track: ISoundCloudTrack) {
-    if(track === this._activeTrack.getValue())
+    if(track === this._state.track && this._state.isPlaying)
       return;
 
-    const sound: ISound = this.getOrCreateSound(track);
-    this.pause();
-    sound.play();
-    this._activeTrack.next(track);
-    if(sound.prevPosition){
-      this.seek(sound.prevPosition)
-    }
+    if(this._state.isPlaying)
+      this.pause();
+
+    if(!track) track = this._state.track;
+    const sound: ISound = this.getOrCreateSound(track).play();
+    this._stateObserver.next(this._state = { track: track, sound: sound, isPlaying: true });
+
+    if(track.lastPosition)
+      this.seek(track.lastPosition);
   }
 
   public seek(millis: number) {
-    const track: ISoundCloudTrack = this._activeTrack.getValue();
-    if(!track)
-      return;
-    this._soundManager.setPosition(track._id, millis);
+    if(!this._state.track) return;
+    this._soundManager.setPosition(this._state.track.id, millis);
   }
 
-  /**
-   * If SoundManager.createSound is called with the ID of an existing sound, that sound object will be returned "as-is".
-   * Any other getOrCreateSound options passed (eg., url or volume, etc.) will be ignored.
-   */
   private getOrCreateSound(track: ISoundCloudTrack): ISound {
+
+    if(this._sounds[track.id]){
+      return this._sounds[track.id];
+    }
+
     let prevTime: Date = null;
+    let posObserver: Observer<number>;
+    let buffObserver: Observer<boolean>;
+
     const sound: ISound = this._soundManager.createSound({
-      id: track._id,
+      id: track.id,
       url: track.stream_url,
       whileplaying: () => {
-        track.isPlaying = true;
-        this._currentTrackPosition.next({track: this._activeTrack.getValue(), time: sound.position});
+        if(buffObserver) buffObserver.next(false);
+        if(posObserver) posObserver.next(sound.position);
         prevTime = new Date();
       },
       whileloading: () => {
         let currTime: Date = new Date();
         if(!prevTime || (currTime.getTime() - prevTime.getTime() > 1000)) {
-          track.isPlaying = false;
+          if(buffObserver) buffObserver.next(true);
         }
       }
     });
-    return sound;
+
+    sound.position$ = new Observable<number>((o: Observer<number>) => { posObserver = o });
+    sound.buffering$ = new Observable<boolean>((o: Observer<boolean>) => { buffObserver = o });
+
+    return this._sounds[track.id] = sound;
   }
 }

@@ -1,7 +1,8 @@
 import { DurationPipe } from "../../pipes";
 import { PlayerService } from "../../services";
-import { Component, ElementRef, Input, OnInit, Inject } from "@angular/core";
-import { ISoundCloudTrack, SOUND_MANAGER, ISoundManager, ISound } from "../../interfaces";
+import { Component, ElementRef, Input, OnInit, Inject, AfterViewInit } from "@angular/core";
+import { ISoundCloudTrack, SOUND_MANAGER, ISoundManager, ISound, IPlayerState } from "../../interfaces";
+import { Subscription } from "rxjs";
 
 declare const $: any;
 
@@ -19,50 +20,42 @@ let durationPipe: DurationPipe = new DurationPipe();
     '(touchend)': 'seekTrack($event)',
   }
 })
-export class WaveformComponent implements OnInit {
-
-  @Input() public track: ISoundCloudTrack;
-
-  public seekBarTime = '';
-  public currentPosition = '';
-  public seekBarPosition = 0;
-  public progressBarPosition = 0;
+export class WaveformComponent implements OnInit, AfterViewInit {
 
   private _$el: any;
   private _seekBarWrapperWidth = 0;
 
-  constructor(private _el: ElementRef,
-              private _player: PlayerService,
-              @Inject(SOUND_MANAGER) private _soundManager: ISoundManager) {
+  public seekBarTime;
+  public currentPosition;
+  public seekBarPosition = 0;
+  public progressBarPosition = 0;
+  public track: ISoundCloudTrack;
+
+  constructor(private _el: ElementRef, private _player: PlayerService) { }
+
+  public ngAfterViewInit() {
     this._$el = $(this._el.nativeElement);
+    this._seekBarWrapperWidth = this._$el.width();
   }
 
   public ngOnInit() {
-    this._seekBarWrapperWidth = this._$el.width();
-
-    const sound: ISound = this._soundManager.getSoundById(this.track._id);
-    if(sound) {
-      this.setPosition(sound.position);
-    }
-
-    this._player.currentTrackPosition.subscribe((data) => {
-      if(data.track === this.track) {
-        this.setPosition(data.time);
+    let posSubscription: Subscription;
+    this._player.state$.subscribe((pState: IPlayerState) => {
+      if(this.track !== pState.track){
+        this.track = pState.track;
+        if(posSubscription) posSubscription.unsubscribe();
+        if(pState.track && pState.sound) posSubscription = pState.sound.position$.subscribe(position => this.setPosition(position));
       }
-    })
+    });
   }
 
-  private setPosition(time: number) {
-    var percentage = ((time / this.track.duration) * 100);
+  private setPosition(position: number) {
+    var percentage = ((position / this.track.duration) * 100);
     this.progressBarPosition = percentage;
-    this.currentPosition = durationPipe.transform(time) + ' / ';
+    this.currentPosition = durationPipe.transform(position) + ' / ';
   }
 
   public showSeekBar(ev: any) {
-    if(this.track !== this._player.activeTrack.getValue()) {
-      return;
-    }
-
     var x = (ev.pageX || ev.changedTouches[0].pageX) - this._$el.offset().left;
     var percentage = ((x / this._seekBarWrapperWidth) * 100);
     this.seekBarPosition = percentage;
@@ -72,10 +65,6 @@ export class WaveformComponent implements OnInit {
   }
 
   public seekTrack(ev: any) {
-    if(this.track !== this._player.activeTrack.getValue()) {
-      return;
-    }
-
     this.hideSeekBar(ev);
     var x = (ev.pageX || ev.changedTouches[0].pageX) - this._$el.offset().left;
     var millis = ((x / this._seekBarWrapperWidth) * this.track.duration);
@@ -83,10 +72,6 @@ export class WaveformComponent implements OnInit {
   }
 
   public hideSeekBar(ev: any) {
-    if(this.track !== this._player.activeTrack.getValue()) {
-      return;
-    }
-
     this.seekBarPosition = 0;
     this.seekBarTime = '';
   }

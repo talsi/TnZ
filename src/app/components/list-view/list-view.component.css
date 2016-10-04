@@ -1,6 +1,6 @@
 :host {
   display: block;
-  height: calc(100vh - 112px);
+  height: calc(100vh - 21vh);
   overflow-y: auto;
 }
 
@@ -12,7 +12,7 @@ ul.tracks-list {
   background-color: #FBFBFB;
   box-shadow: 0px 0px 0px 1px #DADADA;
   margin: 0;
-  padding: 10px 0 7px;
+  padding-yop: 10px;
 }
 
 @media screen and (min-width: 600px) {
