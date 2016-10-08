@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { ISoundCloudTrack } from "../interfaces";
+import { Injectable } from "@angular/core";
 import { SOUND_CLOUD_CLIENT_ID, FULL_EPISODE_MINIMUM_DURATION_millis } from "../shared";
+import { SoundCloudObj } from "../models";
 
 const WORDS_TO_REMOVE_FROM_TITLE = ["טייכר וזרחוביץ'", 'טייכר וזרחוביץ', 'ברדיו תל אביב,', 'ברדיו ת"א', 'יום', 'ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', ',', '-', '#', '[0-9]', 'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי ', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר', 'בינואר', 'בפברואר', 'במרץ', 'באפריל', 'במאי', 'ביוני', 'ביולי', 'באוגוסט', 'בספטמבר', 'באוקטובר', 'בנובמבר', 'בדצמבר', 'באגוסט', '2015', '2016'];
 const regex = new RegExp(WORDS_TO_REMOVE_FROM_TITLE.join('|'), 'gi');
@@ -10,9 +10,9 @@ export class TracksParserService {
 
   constructor() { }
 
-  public parseTracks(data: ISoundCloudTrack[]): ISoundCloudTrack[] {
+  public parseTracks(data: SoundCloudObj[]): SoundCloudObj[] {
 
-    return data.map((track: ISoundCloudTrack) => {
+    return data.map((track: SoundCloudObj) => {
       track.stream_url +=  '?client_id=' + SOUND_CLOUD_CLIENT_ID;
       track.displayName = track.title.replace(regex, '');
       if (new RegExp('אסדה').test(track.title)) {

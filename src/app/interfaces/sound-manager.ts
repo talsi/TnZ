@@ -1,19 +1,7 @@
-/**
- * Created by talsi on 07/05/2016.
- */
 import { OpaqueToken } from "@angular/core";
-import { Observable } from "rxjs";
+import { SoundManagerObj } from "../models";
 
 export const SOUND_MANAGER = new OpaqueToken('sound-manager');
-
-export interface ISound {
-  play():  ISound
-  pause(): ISound
-  unload(): ISound
-  position: number
-  position$: Observable<number>
-  buffering$: Observable<boolean>
-}
 
 export interface ISoundManagerSettings {
   id: number
@@ -23,7 +11,7 @@ export interface ISoundManagerSettings {
 }
 
 export interface ISoundManager {
-  getSoundById(id: number): ISound
+  createSound(settings: ISoundManagerSettings): SoundManagerObj
+  getSoundById(id: number): SoundManagerObj
   setPosition(id: number, millis: number): void
-  createSound(settings: ISoundManagerSettings): ISound
 }

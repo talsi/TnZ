@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Http, URLSearchParams } from "@angular/http";
-import { ISoundCloudTrack } from "../interfaces";
+import { SoundCloudObj } from "../models";
 import { TracksParserService } from "./tracks-parser.service";
 import { Observable, Observer } from "rxjs";
 import { SOUND_CLOUD_CLIENT_ID } from "../shared";
+import { Actions, Effect } from "@ngrx/effects";
 
 const API_BASE_URL = 'https://api.soundcloud.com';
 const TRACKS_ENDPOINT = `${API_BASE_URL}/tracks`;
@@ -18,23 +19,25 @@ QUERY.set('format', 'json');
 @Injectable()
 export class SoundCloudService {
 
-  public constructor(private _http: Http, private _tracksParser: TracksParserService) { }
+  public constructor(
+    private _http: Http,
+    private _tracksParser: TracksParserService
+  ) { }
 
-  public loadTracks(): Observable<ISoundCloudTrack[]> {
-    return new Observable<ISoundCloudTrack[]>((o: Observer<ISoundCloudTrack[]>) => {
+  public loadTracks(): Observable<SoundCloudObj[]> {
+    return new Observable<SoundCloudObj[]>((o: Observer<SoundCloudObj[]>) => {
       let loadPartition = (url: string, query: URLSearchParams) => {
         let next_href: string  = '';
         this._http.get(url, {search: query})
           .map(data => data.json())
           .subscribe(
             data => { o.next(this._tracksParser.parseTracks(data.collection)); next_href = data['next_href']; },
-            err => { o.error(err); o.complete(); },
+            err => { o.error(err); },
             () => { if(next_href) { loadPartition(next_href, null); } else { o.complete(); } }
           );
       };
       loadPartition(TRACKS_ENDPOINT, QUERY);
     }).flatMap(track => track)
-      .distinctKey('id')
-      .toArray();
+      .distinctKey('id');
   }
 }
